@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Home</a>
+      <a class="navbar-brand" href="/predict">Predict</a>
+    <a class="navbar-brand" href="/predict">upload data</a>
+
+</nav>
+
+
+<div class="container h-100">
+  <div class="row h-100 justify-content-center align-items-center">
+    <form class="col-12" enctype="multipart/form-data" method="POST" action="/upload">
+      <div class="form-group">
+        <label for="formGroupExampleInput">Example label</label>
+        <input type="file" class="form-control" id="formGroupExampleInput" name ="photo" placeholder="Example input">
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput2">Submit  Button</label>
+        <input type="submit" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+
+<button type="button" value="Predict" id="predict" class="btn btn-primary">Primary</button>
+
+
+
+<div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+
+    <script>
+
+
+
+
+$("#predict").on('click',function(){
+
+ $.get("http://localhost:5000/predict_2",function(data){
+
+     function filter(a){
+       return a == 0;
+     }
+
+     function filter_2(a){
+       return a ==1;
+     }
+
+     temp =  data['results']
+     console.log(temp)
+     ones =  temp.filter(filter)
+     zeros =  temp.filter(filter_2)
+     console.log(ones.length)
+      var data = [{
+  x: ['Good', 'Bad'],
+  y: [ones.length, zeros.length],
+  type: 'bar'
+}];
+
+Plotly.newPlot('myDiv', data)
+ })
+
+
+
+
+
+
+
+
+
+        })
+
+
+
+    </script>
+</body>
+</html>
